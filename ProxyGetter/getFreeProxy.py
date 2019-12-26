@@ -322,6 +322,43 @@ class GetFreeProxy(object):
             for proxy in proxies:
                 yield ':'.join(proxy)
 
+    @staticmethod
+    def freeProxy15(max_page=1):
+        """
+        https://proxyranker.com/
+        :param max_page:
+        :return:
+        """
+        base_url = 'https://proxyranker.com/'
+        request = WebRequest()
+        for page in range(1, max_page + 1):
+            url = base_url.format(page)
+            r = request.get(url, timeout=10)
+            proxies = re.findall(
+		r'<td>(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})</td><td>.*?</td><td>.*?</td>[\s\S]*?<td><span title="Proxy port">(\d+?)</span></td>',
+                r.text)
+            for proxy in proxies:
+                yield ':'.join(proxy)
+
+    @staticmethod
+    def freeProxy16(max_page=1):
+        """
+        base_url = 'http://www.thebigproxylist.com/'
+        :param max_page:
+        :return:
+        """
+        base_url = 'http://www.thebigproxylist.com/'
+        request = WebRequest()
+        for page in range(1, max_page + 1):
+            url = base_url.format(page)
+            r = request.get(url, timeout=10)
+            proxies = re.findall(
+                r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}:\d{1,5}", r.text)
+
+            for proxy in proxies:
+                yield proxy
+
+
 
 if __name__ == '__main__':
     from CheckProxy import CheckProxy
@@ -337,5 +374,7 @@ if __name__ == '__main__':
     CheckProxy.checkGetProxyFunc(GetFreeProxy.freeProxy09)
     # CheckProxy.checkGetProxyFunc(GetFreeProxy.freeProxy13)
     # CheckProxy.checkGetProxyFunc(GetFreeProxy.freeProxy14)
+    # CheckProxy.checkGetProxyFunc(GetFreeProxy.freeProxy15)
+    CheckProxy.checkGetProxyFunc(GetFreeProxy.freeProxy16)
 
     # CheckProxy.checkAllGetProxyFunc()
