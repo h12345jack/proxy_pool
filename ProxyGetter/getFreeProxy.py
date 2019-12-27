@@ -185,15 +185,16 @@ class GetFreeProxy(object):
     @staticmethod
     def freeProxy06():
         """
-        码农代理 https://proxy.coderbusy.com/
         :return:
         """
-        urls = ['https://proxy.coderbusy.com/']
+        urls = ['http://pubproxy.com/api/proxy?limit=10&format=txt&http=true&country=US&type=http']
         for url in urls:
-            tree = getHtmlTree(url)
-            proxy_list = tree.xpath('.//table//tr')
-            for tr in proxy_list[1:]:
-                yield ':'.join(tr.xpath('./td/text()')[0:2])
+            content = requests.get(url).text
+            for a in content.split('\n'):
+                print(a)
+                yield a
+            # for tr in proxy_list[1:]:
+            #     yield ':'.join(tr.xpath('./td/text()')[0:2])
 
     @staticmethod
     def freeProxy07():
@@ -245,44 +246,44 @@ class GetFreeProxy(object):
                     continue
                 yield ":".join(tr.xpath("./td/text()")[0:2]).strip()
 
-    # @staticmethod
-    # def freeProxy10():
-    #     """
-    #     墙外网站 cn-proxy
-    #     :return:
-    #     """
-    #     urls = ['http://cn-proxy.com/', 'http://cn-proxy.com/archives/218']
-    #     request = WebRequest()
-    #     for url in urls:
-    #         r = request.get(url, timeout=10)
-    #         proxies = re.findall(r'<td>(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})</td>[\w\W]<td>(\d+)</td>', r.text)
-    #         for proxy in proxies:
-    #             yield ':'.join(proxy)
+    @staticmethod
+    def freeProxy10():
+        """
+        墙外网站 cn-proxy
+        :return:
+        """
+        urls = ['http://cn-proxy.com/', 'http://cn-proxy.com/archives/218']
+        request = WebRequest()
+        for url in urls:
+            r = request.get(url, timeout=10)
+            proxies = re.findall(r'<td>(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})</td>[\w\W]<td>(\d+)</td>', r.text)
+            for proxy in proxies:
+                yield ':'.join(proxy)
 
-    # @staticmethod
-    # def freeProxy11():
-    #     """
-    #     https://proxy-list.org/english/index.php
-    #     :return:
-    #     """
-    #     urls = ['https://proxy-list.org/english/index.php?p=%s' % n for n in range(1, 10)]
-    #     request = WebRequest()
-    #     import base64
-    #     for url in urls:
-    #         r = request.get(url, timeout=10)
-    #         proxies = re.findall(r"Proxy\('(.*?)'\)", r.text)
-    #         for proxy in proxies:
-    #             yield base64.b64decode(proxy).decode()
+    @staticmethod
+    def freeProxy11():
+        """
+        https://proxy-list.org/english/index.php
+        :return:
+        """
+        urls = ['https://proxy-list.org/english/index.php?p=%s' % n for n in range(1, 10)]
+        request = WebRequest()
+        import base64
+        for url in urls:
+            r = request.get(url, timeout=10)
+            proxies = re.findall(r"Proxy\('(.*?)'\)", r.text)
+            for proxy in proxies:
+                yield base64.b64decode(proxy).decode()
 
-    # @staticmethod
-    # def freeProxy12():
-    #     urls = ['https://list.proxylistplus.com/Fresh-HTTP-Proxy-List-1']
-    #     request = WebRequest()
-    #     for url in urls:
-    #         r = request.get(url, timeout=10)
-    #         proxies = re.findall(r'<td>(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})</td>[\s\S]*?<td>(\d+)</td>', r.text)
-    #         for proxy in proxies:
-    #             yield ':'.join(proxy)
+    @staticmethod
+    def freeProxy12():
+        urls = ['https://list.proxylistplus.com/Fresh-HTTP-Proxy-List-1']
+        request = WebRequest()
+        for url in urls:
+            r = request.get(url, timeout=10)
+            proxies = re.findall(r'<td>(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})</td>[\s\S]*?<td>(\d+)</td>', r.text)
+            for proxy in proxies:
+                yield ':'.join(proxy)
 
     @staticmethod
     def freeProxy13(max_page=2):
@@ -371,10 +372,10 @@ if __name__ == '__main__':
     # CheckProxy.checkGetProxyFunc(GetFreeProxy.freeProxy06)
     # CheckProxy.checkGetProxyFunc(GetFreeProxy.freeProxy07)
     # CheckProxy.checkGetProxyFunc(GetFreeProxy.freeProxy08)
-    CheckProxy.checkGetProxyFunc(GetFreeProxy.freeProxy09)
+    CheckProxy.checkGetProxyFunc(GetFreeProxy.freeProxy06)
     # CheckProxy.checkGetProxyFunc(GetFreeProxy.freeProxy13)
     # CheckProxy.checkGetProxyFunc(GetFreeProxy.freeProxy14)
     # CheckProxy.checkGetProxyFunc(GetFreeProxy.freeProxy15)
-    CheckProxy.checkGetProxyFunc(GetFreeProxy.freeProxy16)
+    # CheckProxy.checkGetProxyFunc(GetFreeProxy.freeProxy16)
 
     # CheckProxy.checkAllGetProxyFunc()
